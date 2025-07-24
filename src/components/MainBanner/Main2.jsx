@@ -48,17 +48,16 @@ const Main2 = () => {
 
   const [rotate, setRotate] = useState(0);
   useEffect(() => {
-    window.addEventListener("mousemove", (e) => {
-      let mouseX = e.clientX;
-      let mouseY = e.clientY;
-
-      let deltaX = mouseX - window.innerWidth / 2;
-      let deltaY = mouseY - window.innerHeight / 2;
-
-      var angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+    const handleMouseMove = (e) => {
+      let deltaX = e.clientX - window.innerWidth / 2;
+      let deltaY = e.clientY - window.innerHeight / 2;
+      let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
       setRotate(angle - 180);
-    });
-  });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   return (
     <section
@@ -75,10 +74,6 @@ const Main2 = () => {
         style={{ y: backgroundY }}
         className="absolute inset-0 -z-20 opacity-10 w-full h-full object-cover"
       />
-
-      {/* Floating BPOS text */}
-
-      {/* Heading */}
 
       <motion.h2
         initial={{ opacity: 0, y: -50 }}
@@ -98,50 +93,38 @@ const Main2 = () => {
             />
             <span className="px-2 py-1 text-[#0D060C]">Smarter</span>
           </span>{" "}
-          Consensus{" "}
+          Consensus
         </div>
-        <div className=" relative">
-          <div className="absolute flex gap-10 top-1/2 left-1/2 -translate-y-[50%] -translate-x-[50%] w-1/3 ">
-            <div
-              data-scroll
-              data-scroll-speed=".2"
-              className="flex items-center justify-center w-[15vw] h-[15vw] rounded-full bg-[#947194]"
-            >
-              <div className="relative w-2/3 h-2/3  rounded-full bg-zinc-900">
-                <div
-                  style={{
-                    transform: `translate(-50%, -50%) rotate(${rotate}deg)`,
-                  }}
-                  className="absolute line top-2/2 left-2/2 -translate-x-1/2 -translate-y-[68px] w-full h-10"
-                >
-                  <div className="w-10 h-10 rounded-full bg-[#947194] blur-[1px]"></div>
+
+        <div className="relative">
+          {/* HIDDEN ON MOBILE */}
+          <div className="absolute gap-10 top-1/2 left-1/2 -translate-y-[50%] -translate-x-[50%] w-1/3 hidden md:flex">
+            {[1, 2].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-center w-[15vw] h-[15vw] rounded-full bg-[#947194]"
+              >
+                <div className="relative w-2/3 h-2/3 rounded-full bg-zinc-900">
+                  <div
+                    style={{
+                      transform: `translate(-50%, -50%) rotate(${rotate}deg)`,
+                    }}
+                    className="absolute line top-2/2 left-2/2 -translate-x-1/2 -translate-y-[68px] w-full h-10"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#947194] blur-[1px]"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              data-scroll
-              data-scroll-speed=".2"
-              className="flex items-center justify-center w-[15vw] h-[15vw] rounded-full bg-[#947194]"
-            >
-              <div className="relative w-2/3 h-2/3  rounded-full bg-zinc-900">
-                <div
-                  style={{
-                    transform: `translate(-50%, -50%) rotate(${rotate}deg)`,
-                  }}
-                  className="absolute line top-2/2 left-2/2 -translate-x-[50%] -translate-y-[68px] w-full h-10"
-                >
-                  <div className="w-10 h-10 rounded-full bg-[#947194] blur-[1px]"></div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
+
+          {/* Always show on all devices */}
           <span>
             <TextHoverEffect text="EYES" />
           </span>
         </div>
       </motion.h2>
 
-      {/* Scroll-driven Cards */}
       <div className="relative z-10 max-w-3xl mx-auto flex flex-col gap-10">
         {features.map((item, index) => {
           const progressStart = index * 0.15;
@@ -188,7 +171,6 @@ const Main2 = () => {
               <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
               <p className="text-gray-300 mb-6 text-sm">{item.description}</p>
 
-              {/* View More Button */}
               <motion.button
                 whileHover={{
                   scale: 1.05,
