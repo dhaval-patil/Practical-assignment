@@ -1,0 +1,52 @@
+/* neon.css */
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Blue Neon Glow Text */
+.blue-neon-text {
+  color: #e0f7ff;
+  text-shadow: 0 0 5px #00faff, 0 0 10px #00faff, 0 0 20px #00faff;
+}
+
+/* Neon Border Animation */
+.blue-neon-border {
+  animation: blueNeonPulse 3s infinite alternate;
+}
+
+@keyframes blueNeonPulse {
+  0% {
+    border-color: #00faff80;
+    box-shadow: 0 0 5px #00faff44;
+  }
+  100% {
+    border-color: #00faff;
+    box-shadow: 0 0 20px #00faffaa;
+  }
+}
+
+/* Neon Icon Glow */
+.blue-neon-icon {
+  filter: drop-shadow(0 0 5px #00faff);
+}
+
+/* Optional: Custom Cursor Trail */
+.cursor-none::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, #00faff, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
